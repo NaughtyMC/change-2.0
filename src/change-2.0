@@ -1,0 +1,28 @@
+(function ($) {
+    $.fn.optionSelect = function (fn) {
+        return this.each(function () {
+            var clicks = 0;
+            var justChanged = false;
+            $(this).change(function (event) {
+                clicks = 0;
+                justChanged = true;
+                event.type = "optionSelect";
+                fn.call(this, event);
+            }).click(function (event) {
+                if (justChanged == false) {
+                    clicks++;
+                } else {
+                    justChanged = false;
+                }
+                if (clicks === 2) {
+                    clicks = 0;
+                    event.type = "optionSelect";
+                    fn.call(this, event);
+                }
+            }).blur(function() {
+                clicks = 0;
+                justChanged = false;
+            });
+        });
+    }
+})(jQuery);
